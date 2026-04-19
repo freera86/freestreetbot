@@ -11,15 +11,32 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # обработка сообщений
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = "📩 Новая новость\n\n"
-
+    # ТЕКСТ
     if update.message.text:
-        text += update.message.text
-    else:
-        text += "📎 Отправлено фото или видео"
+        await context.bot.send_message(
+            chat_id=8700346291,
+            text=f"📩 Новая новость:\n\n{update.message.text}"
+        )
 
-    await context.bot.send_message(chat_id=ADMIN_ID, text=text)
+    # ФОТО
+    elif update.message.photo:
+        photo = update.message.photo[-1].file_id
+        await context.bot.send_photo(
+            chat_id=8700346291,
+            photo=photo,
+            caption="📸 Новое фото"
+        )
 
+    # ВИДЕО
+    elif update.message.video:
+        video = update.message.video.file_id
+        await context.bot.send_video(
+            chat_id=8700346291,
+            video=video,
+            caption="🎥 Новое видео"
+        )
+
+    # ОТВЕТ ПОЛЬЗОВАТЕЛЮ
     await update.message.reply_text("✅ Спасибо! Новость отправлена.")
 
 # запуск
