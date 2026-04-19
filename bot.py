@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, filters, ContextTypes
 
-TOKEN = "ТВОЙ_ТОКЕН"
+TOKEN = "8746379343:AAG3I8Zuhok5Gs3LEvUO30kfFz87dvLQA_M"
 ADMIN_ID = 8700346291
 
 # команда /start
@@ -18,7 +18,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ТЕКСТ
     if update.message.text:
         await context.bot.send_message(
-            chat_id=ADMIN_ID,
+            chat_id=8700346291,
             text=f"📩 Новая новость от {user_id}:\n\n{update.message.text}"
         )
 
@@ -26,7 +26,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif update.message.photo:
         photo = update.message.photo[-1].file_id
         await context.bot.send_photo(
-            chat_id=ADMIN_ID,
+            chat_id=8700346291,
             photo=photo,
             caption=f"📸 Фото от {user_id}"
         )
@@ -35,7 +35,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif update.message.video:
         video = update.message.video.file_id
         await context.bot.send_video(
-            chat_id=ADMIN_ID,
+            chat_id=8700346291,
             video=video,
             caption=f"🎥 Видео от {user_id}"
         )
