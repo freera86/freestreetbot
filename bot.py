@@ -15,7 +15,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.text:
         await context.bot.send_message(
             chat_id=8700346291,
-            text=f"📩 Новая новость:\n\n{update.message.text}"
+            text=f"📩 Новая новость от {update.message.from_user.id}:\n\n{update.message.text}"
         )
 
     # ФОТО
@@ -24,7 +24,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=8700346291,
             photo=photo,
-            caption="📸 Новое фото"
+            caption=f"📸 Фото от {update.message.from_user.id}"
         )
 
     # ВИДЕО
@@ -33,9 +33,39 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_video(
             chat_id=8700346291,
             video=video,
-            caption="🎥 Новое видео"
+            caption=f"🎥 Видео от {update.message.from_user.id}"
         )
 
+    # ОТВЕТ ПОЛЬЗОВАТЕЛЮ
+    await update.message.reply_text("✅ Спасибо! Новость отправлена.")
+
+async def reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+
+    try:
+        user_id = int(context.args[0])
+        text = " ".join(context.args[1:])
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=f"💬 Ответ администратора:\n\n{text}"
+        )
+
+        await update.message.reply_text("✅ Ответ отправлен")
+
+    except:
+        await update.message.reply_text("❌ Используй: /reply user_id текст")
+
+# запуск
+app = ApplicationBuilder().token(TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(MessageHandler(filters.ALL, handle_message))
+app.add_handler(CommandHandler("reply", reply))
+
+print("Бот запущен...")
+app.run_polling()
     # ОТВЕТ ПОЛЬЗОВАТЕЛЮ
     await update.message.reply_text("✅ Спасибо! Новость отправлена.")
 
